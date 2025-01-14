@@ -5,7 +5,7 @@ create table topics(
     created_at datetime not null,
     status varchar(50) not null,
     author_id bigint not null,
-    course_id bigint not null,
+    course_id bigint,
 
     primary key(id),
     constraint fk_topics_course_id foreign key(course_id) references courses(id),
