@@ -14,7 +14,7 @@ import java.util.List;
 
 @Table(name = "users")
 @Entity(name = "User")
-@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 public class User implements UserDetails {
     @Id
@@ -23,6 +23,10 @@ public class User implements UserDetails {
     private String name;
     private String email;
     private String password;
+
+    public User(){
+        super();
+    }
 
     public User(DataCreateUser data){
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(16);

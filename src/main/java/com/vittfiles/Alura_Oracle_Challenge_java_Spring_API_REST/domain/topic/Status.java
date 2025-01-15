@@ -1,7 +1,7 @@
 package com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.topic;
 
 public enum Status {
-    NO_ANSWER("SIN_RESPUESTA"),
+    NO_ANSWER("SIN RESPUESTA"),
     RESOLVED("RESUELTO"),
     SPAM("SPAM");
 
@@ -18,5 +18,9 @@ public enum Status {
             }
         }
         throw new IllegalArgumentException("Status not found");
+    }
+
+    public String getSpanishName() {
+        return spanishName;
     }
 }
