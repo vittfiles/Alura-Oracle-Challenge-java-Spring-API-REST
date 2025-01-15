@@ -1,11 +1,13 @@
 package com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.user;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Collection;
 import java.util.List;
@@ -21,6 +23,13 @@ public class User implements UserDetails {
     private String name;
     private String email;
     private String password;
+
+    public User(DataCreateUser data){
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(16);
+        this.name = data.name();
+        this.email = data.email();
+        this.password = encoder.encode(data.password());
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -55,5 +64,17 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return UserDetails.super.isEnabled();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
     }
 }

@@ -11,6 +11,6 @@ public class TopicController {
 
     @GetMapping
     public ResponseEntity getTopics(){
-        return ResponseEntity.ok(null);
+        return ResponseEntity.noContent().build();
     }
 }
