@@ -10,6 +10,7 @@ import netscape.javascript.JSObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,10 +28,13 @@ public class UserController {
     @Autowired
     private TokenService tokenService;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @PostMapping
     public ResponseEntity createUser(@RequestBody @Valid DataCreateUser data){
         try {
-            User user = userRepository.save(new User(data));
+            User user = userRepository.save(new User(data,passwordEncoder));
             var tokenJWT = tokenService.generateToken(user);
             UserCreatedDTO userCreatedDTO = new UserCreatedDTO(
                     tokenJWT,
@@ -39,9 +43,7 @@ public class UserController {
             );
             return ResponseEntity.ok(userCreatedDTO);
         } catch (DataIntegrityViolationException e){
-            HashMap<String,String> error = new HashMap<>();
-            error.put("error","El email ya existe");
-            return ResponseEntity.badRequest().body(error);
+            return ResponseEntity.badRequest().body("El email ya existe");
         }
     }
 }

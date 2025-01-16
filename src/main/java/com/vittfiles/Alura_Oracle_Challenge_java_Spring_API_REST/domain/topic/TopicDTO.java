@@ -8,8 +8,7 @@ public record TopicDTO(
         String message,
         LocalDateTime createdAt,
         String status,
-        Long authorId,
-        String author,
+        Long author,
         Long course
 ) {
     public TopicDTO(Topic topic){
@@ -20,7 +19,6 @@ public record TopicDTO(
                 topic.getCreatedAt(),
                 topic.getStatus().getSpanishName(),
                 topic.getAuthor().getId(),
-                topic.getAuthor().getName(),
                 null
                 );
     }

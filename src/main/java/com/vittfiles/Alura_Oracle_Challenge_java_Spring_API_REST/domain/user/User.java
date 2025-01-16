@@ -8,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Collection;
 import java.util.List;
@@ -28,11 +29,11 @@ public class User implements UserDetails {
         super();
     }
 
-    public User(DataCreateUser data){
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(16);
+    public User(DataCreateUser data, PasswordEncoder passwordEncoder){
         this.name = data.name();
         this.email = data.email();
-        this.password = encoder.encode(data.password());
+        this.password = passwordEncoder.encode(data.password());
+        System.out.println(this.password);
     }
 
     @Override

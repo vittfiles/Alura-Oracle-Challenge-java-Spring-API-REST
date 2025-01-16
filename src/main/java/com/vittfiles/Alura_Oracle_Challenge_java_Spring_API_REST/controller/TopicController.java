@@ -1,21 +1,23 @@
 package com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.controller;
 
-import com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.topic.DataCreateTopic;
-import com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.topic.Topic;
-import com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.topic.TopicDTO;
-import com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.topic.TopicRepository;
+import com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.CustomValidationException;
+import com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.topic.*;
 import com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.user.User;
+import com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.user.UserRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/topicos")
 public class TopicController {
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private TopicRepository topicRepository;
@@ -28,9 +30,22 @@ public class TopicController {
     }
 
     @PostMapping
-    public ResponseEntity<Topic> createTopic(@RequestBody @Valid DataCreateTopic data){
-        var userData = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Topic topic = topicRepository.save(new Topic(data,(User) userData));
-        return ResponseEntity.ok(topic);
+    public ResponseEntity<TopicDTO> createTopic(@RequestBody @Valid DataCreateTopic data){
+//        var userData = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        var user = userRepository.findById(data.author());
+        if(user.isEmpty()){
+            throw new CustomValidationException("No existe el autor del tópico");
+        }
+        var topicDB = topicRepository.getTopicRepeated(data.title(),data.message());
+        if(topicDB.isPresent()){
+            throw  new CustomValidationException("El tópico ya existe");
+        }
+        Topic topic = topicRepository.save(new Topic(data,user.get()));
+        return ResponseEntity.ok(new TopicDTO(topic));
+    }
+
+    @PutMapping
+    public ResponseEntity updateTopic(@RequestBody @Valid DataUpdateTopic data){
+        return ResponseEntity.ok(null);
     }
 }
