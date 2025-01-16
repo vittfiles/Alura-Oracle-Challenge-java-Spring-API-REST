@@ -1,7 +1,9 @@
 package com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.controller;
 
 import com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.CustomValidationException;
+import com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.course.CourseRepository;
 import com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.topic.*;
+import com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.topic.create_validators.CreateTopicValidator;
 import com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.user.User;
 import com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.user.UserRepository;
 import jakarta.validation.Valid;
@@ -22,6 +24,12 @@ public class TopicController {
     @Autowired
     private TopicRepository topicRepository;
 
+    @Autowired
+    private CourseRepository courseRepository;
+
+    @Autowired
+    private List<CreateTopicValidator> createTopicValidators;
+
     @GetMapping
     public ResponseEntity<List<TopicDTO>> getTopics(){
         var topics = topicRepository.findAll().stream()
@@ -32,15 +40,12 @@ public class TopicController {
     @PostMapping
     public ResponseEntity<TopicDTO> createTopic(@RequestBody @Valid DataCreateTopic data){
 //        var userData = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        createTopicValidators.forEach(v -> v.validate(data));
+
+        var course = courseRepository.findById(data.course());
         var user = userRepository.findById(data.author());
-        if(user.isEmpty()){
-            throw new CustomValidationException("No existe el autor del tópico");
-        }
-        var topicDB = topicRepository.getTopicRepeated(data.title(),data.message());
-        if(topicDB.isPresent()){
-            throw  new CustomValidationException("El tópico ya existe");
-        }
-        Topic topic = topicRepository.save(new Topic(data,user.get()));
+
+        Topic topic = topicRepository.save(new Topic(data,user.get(),course.get()));
         return ResponseEntity.ok(new TopicDTO(topic));
     }
 

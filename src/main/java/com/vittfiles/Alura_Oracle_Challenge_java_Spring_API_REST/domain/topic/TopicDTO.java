@@ -19,7 +19,7 @@ public record TopicDTO(
                 topic.getCreatedAt(),
                 topic.getStatus().getSpanishName(),
                 topic.getAuthor().getId(),
-                null
+                topic.getCourse().getId()
                 );
     }
 }

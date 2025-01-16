@@ -35,12 +35,13 @@ public class Topic {
         super();
     }
 
-    public Topic(DataCreateTopic topic,User user){
+    public Topic(DataCreateTopic topic, User user, Course course){
         title = topic.title();
         message = topic.message();
         createdAt = LocalDateTime.now();
         status = Status.NO_ANSWER;
         author = user;
+        this.course = course;
     }
 
     public Long getId() {
@@ -70,4 +71,5 @@ public class Topic {
     public Course getCourse() {
         return course;
     }
+
 }
