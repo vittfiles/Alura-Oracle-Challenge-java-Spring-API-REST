@@ -2,7 +2,8 @@ package com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.topic.c
 
 import com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.CustomValidationException;
 import com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.course.CourseRepository;
-import com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.topic.DataCreateTopic;
+import com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.topic.CreateDataTopic;
+import jakarta.validation.constraints.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +14,16 @@ public class CourseExist implements CreateTopicValidator{
     private CourseRepository courseRepository;
 
     @Override
-    public void validate(DataCreateTopic data) {
+    public void validate(CreateDataTopic data) {
+        var course = courseRepository.findById(data.course());
+
+        if(course.isEmpty()){
+            throw new CustomValidationException("No existe el curso");
+        }
+    }
+
+    @Override
+    public void validate(CreateDataTopic data, Long id) {
         var course = courseRepository.findById(data.course());
 
         if(course.isEmpty()){

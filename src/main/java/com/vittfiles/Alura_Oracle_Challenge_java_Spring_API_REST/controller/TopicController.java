@@ -1,18 +1,16 @@
 package com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.controller;
 
-import com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.CustomValidationException;
 import com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.course.CourseRepository;
 import com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.topic.*;
 import com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.topic.create_validators.CreateTopicValidator;
-import com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.user.User;
 import com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.user.UserRepository;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/topicos")
@@ -30,6 +28,9 @@ public class TopicController {
     @Autowired
     private List<CreateTopicValidator> createTopicValidators;
 
+    @Autowired
+    private UpdateTopicService updateTopicService;
+
     @GetMapping
     public ResponseEntity<List<TopicDTO>> getTopics(){
         var topics = topicRepository.findAll().stream()
@@ -38,7 +39,7 @@ public class TopicController {
     }
 
     @PostMapping
-    public ResponseEntity<TopicDTO> createTopic(@RequestBody @Valid DataCreateTopic data){
+    public ResponseEntity<TopicDTO> createTopic(@RequestBody @Valid CreateDataTopic data){
 //        var userData = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         createTopicValidators.forEach(v -> v.validate(data));
 
@@ -49,8 +50,10 @@ public class TopicController {
         return ResponseEntity.ok(new TopicDTO(topic));
     }
 
-    @PutMapping
-    public ResponseEntity updateTopic(@RequestBody @Valid DataUpdateTopic data){
-        return ResponseEntity.ok(null);
+    @PutMapping("/{id}")
+    @Transactional
+    public ResponseEntity<TopicDTO> updateTopic(@RequestBody @Valid DataUpdateTopic data, @PathVariable Long id){
+        var topic = updateTopicService.update(data, id);
+        return ResponseEntity.ok(new TopicDTO(topic));
     }
 }

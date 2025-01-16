@@ -35,7 +35,7 @@ public class Topic {
         super();
     }
 
-    public Topic(DataCreateTopic topic, User user, Course course){
+    public Topic(CreateDataTopic topic, User user, Course course){
         title = topic.title();
         message = topic.message();
         createdAt = LocalDateTime.now();
@@ -72,4 +72,23 @@ public class Topic {
         return course;
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
 }

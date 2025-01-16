@@ -17,7 +17,7 @@ public enum Status {
                 return status;
             }
         }
-        throw new IllegalArgumentException("Status not found");
+        throw new IllegalArgumentException("Estado no encontrado");
     }
 
     public String getSpanishName() {
