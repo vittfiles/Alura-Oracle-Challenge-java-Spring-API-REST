@@ -13,7 +13,7 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/courses")
+@RequestMapping("/cursos")
 public class CourseController {
 
     @Autowired
