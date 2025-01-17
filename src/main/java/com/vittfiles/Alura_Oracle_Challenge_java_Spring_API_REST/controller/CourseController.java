@@ -4,6 +4,7 @@ import com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.CustomVa
 import com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.course.*;
 import com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.topic.Topic;
 import com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.topic.TopicRepository;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/cursos")
+@SecurityRequirement(name = "bearer-key")
 public class CourseController {
 
     @Autowired

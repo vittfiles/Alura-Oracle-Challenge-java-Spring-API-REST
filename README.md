@@ -17,11 +17,14 @@
 
 This is a challenge called Foro Hub made with Spring Boot.
 You can connect to this API to handle topics.
+This implement <a href="https://springdoc.org" target="_blank">https://springdoc.org</a> to try the api.
 
 ## Deploy
 
 Create a database using MySQL and add the credentials in the referenced system environment variables
 in the application.properties file.
+To try the api when the server is running, go to url: http://localhost:8080/swagger-ui.html
+
 
 ## How to use
 - Create an user.

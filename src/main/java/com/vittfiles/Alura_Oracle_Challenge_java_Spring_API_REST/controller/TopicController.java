@@ -4,6 +4,7 @@ import com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.course.C
 import com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.topic.*;
 import com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.topic.create_validators.CreateTopicValidator;
 import com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.user.UserRepository;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -19,6 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/topicos")
+@SecurityRequirement(name = "bearer-key")
 public class TopicController {
 
     @Autowired
