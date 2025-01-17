@@ -3,12 +3,11 @@ package com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.topic.c
 import com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.CustomValidationException;
 import com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.topic.CreateDataTopic;
 import com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.topic.TopicRepository;
-import jakarta.validation.constraints.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TopicExist implements CreateTopicValidator{
+public class TopicExist implements CreateTopicValidator, UpdateTopicValidator {
 
     @Autowired
     private TopicRepository topicRepository;

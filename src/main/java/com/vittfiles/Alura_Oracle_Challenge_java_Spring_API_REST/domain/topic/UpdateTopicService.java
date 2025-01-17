@@ -2,7 +2,7 @@ package com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.topic;
 
 import com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.CustomValidationException;
 import com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.course.CourseRepository;
-import com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.topic.create_validators.CreateTopicValidator;
+import com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.topic.create_validators.UpdateTopicValidator;
 import com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ public class UpdateTopicService {
     private CourseRepository courseRepository;
 
     @Autowired
-    private List<CreateTopicValidator> topicValidators;
+    private List<UpdateTopicValidator> topicValidators;
 
     public Topic update(DataUpdateTopic data, Long id){
 
