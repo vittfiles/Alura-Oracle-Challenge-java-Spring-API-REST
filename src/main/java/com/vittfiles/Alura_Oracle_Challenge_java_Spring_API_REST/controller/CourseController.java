@@ -2,6 +2,8 @@ package com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.controller;
 
 import com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.CustomValidationException;
 import com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.course.*;
+import com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.topic.Topic;
+import com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.topic.TopicRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,9 @@ public class CourseController {
 
     @Autowired
     private CourseRepository courseRepository;
+
+    @Autowired
+    private TopicRepository topicRepository;
 
     @GetMapping("/{id}")
     public ResponseEntity<CourseDTO> getCourse(@PathVariable Long id){
@@ -62,7 +67,17 @@ public class CourseController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity updateCourse(@PathVariable Long id){
+        var topics = topicRepository.getTopicsByCourseId(id);
+        if(!topics.isEmpty()){
+            var ids = topics.stream().map(Topic::getId).toList();
+            if(ids.size() > 1){
+                throw new CustomValidationException("El curso no puede ser borrado por referenciar los tópicos "+ids);
+            }else{
+                throw new CustomValidationException("El curso no puede ser borrado por referenciar el tópico "+ids);
+            }
+        }
         courseRepository.deleteById(id);
+
         return ResponseEntity.noContent().build();
     }
 }

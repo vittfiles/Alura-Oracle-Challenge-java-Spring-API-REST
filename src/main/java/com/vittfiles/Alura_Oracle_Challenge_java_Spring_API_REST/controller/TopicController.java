@@ -1,11 +1,14 @@
 package com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.controller;
 
+import com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.CustomValidationException;
 import com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.course.CourseRepository;
 import com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.topic.*;
 import com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.topic.create_validators.CreateTopicValidator;
 import com.vittfiles.Alura_Oracle_Challenge_java_Spring_API_REST.domain.user.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +39,15 @@ public class TopicController {
         var topics = topicRepository.findAll().stream()
                 .map(TopicDTO::new).toList();
         return ResponseEntity.ok(topics);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<TopicFullDTO> getTopic(@PathVariable Long id){
+        var topic = topicRepository.findById(id);
+        if(topic.isEmpty()){
+            throw new EntityNotFoundException();
+        }
+        return ResponseEntity.ok(new TopicFullDTO(topic.get()));
     }
 
     @PostMapping
